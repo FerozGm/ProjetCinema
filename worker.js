@@ -1,4 +1,5 @@
-const cacheName = "static";
+const cacheName = "site-cache";
+
 self.addEventListener('install', function (event) {
     event.waitUntil(
         caches.open(cacheName).then(function (cache) {
@@ -12,18 +13,22 @@ self.addEventListener('install', function (event) {
 });
 
 self.addEventListener('fetch', function (event) {
-    event.respondWith(
-        caches.match(event, request)
-            .then(function (response) {
-                if (response) {
-                    return response;
+    event.respondWith(caches.match(event.request)
+        .then(function (response) {
+            // Cache hit - return response
+            if (response) {
+                return response;
+            }
+            return fetch(event.request)
+                .then(function (response) {
+                    return caches.open(cacheName)
+                        .then(function (cache) {
+                            cache.put(event.request, response.clone());
+                            return response;
+                        }
+                        )
                 }
-                return fetch(event, request)
-                    .then(function (cache) {
-                        cache.put(event.request, response.clone());
-                        return response;
-                    })
-
-            })
-    );
+                );
+        }
+        ));
 }); 
