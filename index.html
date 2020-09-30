@@ -175,49 +175,50 @@
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function () {
                 navigator.serviceWorker.register('worker.js')
-                .then(function (refistration) {
-                    // Registration was successful
-                    console.log('ServiceWorker registration successful with scope: ',
-                        registration.scope);
-                }, function (err) {
-                    // registration failed :(
-                    console.log('ServiceWorker registration failed: ', err);
-                });
+                    .then(function (refistration) {
+                        // Registration was successful
+                        console.log('ServiceWorker registration successful with scope: ',
+                            registration.scope);
+                    }, function (err) {
+                        // registration failed :(
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
             });
+        }
 
 
 
-            async function getActeurs() {
-                let data = await fetch("https://workshop.neotechweb.net/ws/ciamovie/1.0.0/acteurs.php");
-                let datajson = await data.json();
+        async function getActeurs() {
+            let data = await fetch("https://workshop.neotechweb.net/ws/ciamovie/1.0.0/acteurs.php");
+            let datajson = await data.json();
 
-                let template = document.getElementById("templateActeur");
-                let container = document.getElementById("container");
-                datajson.forEach(acteur => {
-                    let content = template.content.cloneNode(true);
-                    // On est obligé de faire cloneNode() car si on les ajoutait simplement, alors quand on modifiera un des acteur, tous auront la modif
-                    content.querySelector(".nom").innerText = acteur.Nom;
-                    content.querySelector(".portrait>img").src = `https://workshop.neotechweb.net/ws/ciamovie/1.0.0/acteurs/${acteur.idActeur}.jpg`;
-                    container.appendChild(content);
-                });
-            }
-            getActeurs();
+            let template = document.getElementById("templateActeur");
+            let container = document.getElementById("container");
+            datajson.forEach(acteur => {
+                let content = template.content.cloneNode(true);
+                // On est obligé de faire cloneNode() car si on les ajoutait simplement, alors quand on modifiera un des acteur, tous auront la modif
+                content.querySelector(".nom").innerText = acteur.Nom;
+                content.querySelector(".portrait>img").src = `https://workshop.neotechweb.net/ws/ciamovie/1.0.0/acteurs/${acteur.idActeur}.jpg`;
+                container.appendChild(content);
+            });
+        }
+        getActeurs();
 
-            async function getFilms() {
-                let data = await fetch("https://workshop.neotechweb.net/ws/ciamovie/1.0.0/films.php");
-                let datajson = await data.json();
+        async function getFilms() {
+            let data = await fetch("https://workshop.neotechweb.net/ws/ciamovie/1.0.0/films.php");
+            let datajson = await data.json();
 
-                let template = document.getElementById("templateFilm");
-                let container = document.getElementById("container");
-                datajson.forEach(film => {
-                    let content = template.content.cloneNode(true);
-                    // On est obligé de faire cloneNode() car si on les ajoutait simplement, alors quand on modifiera un des acteur, tous auront la modif
-                    content.querySelector(".titre").innerText = film.Titre;
-                    content.querySelector(".poster>img").src = `https://workshop.neotechweb.net/ws/ciamovie/1.0.0/films/${film.Fichier}`;
-                    container.appendChild(content);
-                });
-            }
-            getFilms();
+            let template = document.getElementById("templateFilm");
+            let container = document.getElementById("container");
+            datajson.forEach(film => {
+                let content = template.content.cloneNode(true);
+                // On est obligé de faire cloneNode() car si on les ajoutait simplement, alors quand on modifiera un des acteur, tous auront la modif
+                content.querySelector(".titre").innerText = film.Titre;
+                content.querySelector(".poster>img").src = `https://workshop.neotechweb.net/ws/ciamovie/1.0.0/films/${film.Fichier}`;
+                container.appendChild(content);
+            });
+        }
+        getFilms();
     </script>
 </body>
 
